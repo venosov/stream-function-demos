@@ -12,7 +12,7 @@ import java.util.function.Function
 @SpringBootApplication
 class SinkDemoKotlinApplication {
 	@Bean
-	fun router(): Function<Flux<Int>, Tuple2<Flux<String>, Flux<String>>>? {
+	fun router(): Function<Flux<Int>, Tuple2<Flux<String>, Flux<String>>> {
 		return Function { flux: Flux<Int> ->
 			val connectedFlux = flux.publish().autoConnect(2)
 			val even: UnicastProcessor<String> = UnicastProcessor.create<String>()
