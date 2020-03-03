@@ -30,41 +30,4 @@ public class SinkDemoApplication {
 		return value;
 	}
 
-//	@Bean
-//	public Function<Message<String>, String> uppercase() {
-//		return v -> {
-//			System.out.println("Uppercasing: " + v);
-//			return v.getPayload().toUpperCase();
-//		};
-//	}
-//
-//	@Bean
-//	public Function<String, String> echo() {
-//		return v -> {
-//			System.out.println("Echo: " + v);
-//			return v;
-//		};
-//	}
-//
-//	@Bean
-//	public Function<Flux<Integer>, Flux<Integer>> multiplier() {
-//		return flux -> flux.map(v -> v * v);
-//	}
-//
-//	@Bean
-//	public Function<Flux<Integer>, Tuple2<Flux<String>, Flux<String>>> router() {
-//		return flux -> {
-//			Flux<Integer> connectedFlux = flux.publish().autoConnect(2);
-//			UnicastProcessor even = UnicastProcessor.create();
-//			UnicastProcessor odd = UnicastProcessor.create();
-//
-//			Flux<Integer> evenFlux = connectedFlux.filter(number -> number % 2 == 0)
-//					.doOnNext(number -> even.onNext("EVEN: " + number));
-//			Flux<Integer> oddFlux = connectedFlux.filter(number -> number % 2 != 0)
-//					.doOnNext(number -> even.onNext("ODD: " + number));
-//
-//			return Tuples.of(Flux.from(even).doOnSubscribe(x -> evenFlux.subscribe()),
-//					Flux.from(odd).doOnSubscribe(x -> oddFlux.subscribe()));
-//		};
-//	}
 }

@@ -1,4 +1,11 @@
 spring:
   cloud:
     function:
-      definition: uppercase|echo
+#      definition: uppercase|echo
+      definition: eventLogger;oddLogger
+    stream:
+      bindings:
+        eventLogger-in-0.destination: router-out-0
+        eventLogger-in-0.group: even
+        oddLogger-in-0.destination: router-out-1
+        oddLogger-in-0.group: odd
