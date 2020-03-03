@@ -36,13 +36,6 @@ public class SourceDemoPeriodicApplication {
 	}
 
 	public static void main2(String[] args) throws IOException {
-
-//		Function<Message<String>, String> uppercase = v -> {
-//			System.out.println("Uppercasing: " + v);
-//			return v.getPayload().toUpperCase();
-//		};
-//		System.out.println(uppercase.apply(new GenericMessage<>("hello")));
-
 		Function<Flux<Integer>, Tuple2<Flux<String>, Flux<String>>> router = flux -> {
 			Flux<Integer> connectedFlux = flux.publish().autoConnect(2);
 			UnicastProcessor even = UnicastProcessor.create();
