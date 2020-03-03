@@ -12,10 +12,15 @@ $ bin/kafka-server-start.sh config/server.properties
 $ bin/kafka-topics.sh --list --zookeeper localhost:2181
 
 ```__consumer_offsets
+router-in-0
+router-out-0
+router-out-1
 uppercaseecho-in-0
 uppercaseecho-out-0
 ```
 $ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic uppercaseecho-in-0
+
+$ bin/kafka-console-producer.sh --broker-list localhost:9092 --topic router-in-0
 
 
 
