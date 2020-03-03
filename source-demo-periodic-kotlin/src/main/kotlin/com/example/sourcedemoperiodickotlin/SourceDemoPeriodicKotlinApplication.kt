@@ -55,7 +55,7 @@ fun main(args: Array<String>) {
 //		val evenFlux = connectedFlux.filter { number: Int -> number % 2 == 0 }
 //				.doOnNext { number: Int -> even.onNext("EVEN: $number") }
 //		val oddFlux = connectedFlux.filter { number: Int -> number % 2 != 0 }
-//				.doOnNext { number: Int -> even.onNext("ODD: $number") }
+//				.doOnNext { number: Int -> odd.onNext("ODD: $number") }
 //		Tuples.of<Flux<String>, Flux<String>>(Flux.from(even).doOnSubscribe { evenFlux.subscribe() },
 //				Flux.from(odd).doOnSubscribe { oddFlux.subscribe() })
 //	}
