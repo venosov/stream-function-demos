@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    function:
+      definition: router
+    stream:
+      bindings:
+        router-out-0:
+          producer:
+            required-groups: even
+        router-out-1:
+          producer:
+            required-groups: odd
