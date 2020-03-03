@@ -2,10 +2,12 @@ spring:
   cloud:
     function:
 #      definition: uppercase|echo
-      definition: eventLogger;oddLogger
+      definition: evenLogger;oddLogger
     stream:
       bindings:
-        eventLogger-in-0.destination: router-out-0
-        eventLogger-in-0.group: even
-        oddLogger-in-0.destination: router-out-1
-        oddLogger-in-0.group: odd
+        evenLogger-in-0:
+          destination: router-out-0
+          group: even
+        oddLogger-in-0:
+          destination: router-out-1
+          group: odd

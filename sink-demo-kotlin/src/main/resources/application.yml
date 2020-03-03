@@ -6,7 +6,9 @@ spring:
       bindings:
         router-out-0:
           producer:
-            required-groups: even
+            required-groups:
+            - even
         router-out-1:
           producer:
-            required-groups: odd
+            required-groups:
+            - odd

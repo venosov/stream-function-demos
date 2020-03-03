@@ -22,7 +22,7 @@ class SourceDemoPeriodicKotlinApplication {
 //
 
 	@Bean
-	fun eventLogger() = Consumer { v: String -> println("Event logger: $v") }
+	fun evenLogger() = Consumer { v: String -> println("Even logger: $v") }
 
 	@Bean
 	fun oddLogger() = Consumer { v: String -> println("Odd logger: $v") }
