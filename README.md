@@ -6,7 +6,9 @@ $ docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-man
 ---
 
 $ bin/zookeeper-server-start.sh config/zookeeper.properties
+
 $ bin/kafka-server-start.sh config/server.properties
+
 $ bin/kafka-topics.sh --list --zookeeper localhost:2181
 
 ```__consumer_offsets
