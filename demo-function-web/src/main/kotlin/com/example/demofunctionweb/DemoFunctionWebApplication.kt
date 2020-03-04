@@ -9,7 +9,9 @@ import java.util.function.Function
 class DemoFunctionWebApplication {
 	@Bean
 	fun reverseString() = Function<String, String> {
-		StringBuilder(it).reverse().toString()
+		val result = StringBuilder(it).reverse().toString()
+		println(result)
+		result
 	}
 }
 

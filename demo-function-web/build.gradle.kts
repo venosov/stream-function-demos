@@ -19,6 +19,7 @@ extra["springCloudVersion"] = "Hoxton.SR1"
 
 dependencies {
 	implementation("org.springframework.cloud:spring-cloud-starter-function-web")
+	implementation("org.springframework.cloud:spring-cloud-stream-binder-rabbit")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
