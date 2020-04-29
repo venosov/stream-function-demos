@@ -48,37 +48,39 @@ fun generateFlux(): Flux<Int> {
 	return Flux.interval(Duration.ofSeconds(1)).map(Long::toInt)
 }
 
-//fun main() {
-//	generateFlux().subscribe {
-//		println(it)
-//	}
-//
-//	System.`in`.read()
-//}
-//
-//fun main() {
-//	val router = Function { flux: Flux<Int> ->
-//		val connectedFlux = flux.publish().autoConnect(1)
-//		val even: UnicastProcessor<String> = UnicastProcessor.create()
-//		val evenFlux = connectedFlux.filter { number: Int -> number % 2 == 0 }
-//				.doOnNext { number: Int -> even.onNext("EVEN: $number") }
-//		Flux.from(even).doOnSubscribe { evenFlux.subscribe() }
-//	}
-//
-//	val streams = router.apply(generateFlux())
-//	streams.subscribe { v: String -> println(v) }
-//	System.`in`.read()
-//}
+fun main1() {
+	generateFlux().filter {
+		it % 2 == 0
+	}.subscribe {
+		println(it)
+	}
+
+	System.`in`.read()
+}
+
+fun main2() {
+	val router = Function { flux: Flux<Int> ->
+		val connectedFlux = flux.publish().autoConnect(1)
+		val even: UnicastProcessor<String> = UnicastProcessor.create()
+		val evenFlux = connectedFlux.filter { number: Int -> number % 2 == 0 }
+				.doOnNext { number: Int -> even.onNext("EVEN: $number") }
+		Flux.from(even).doOnSubscribe { evenFlux.subscribe() }
+	}
+
+	val streams = router.apply(generateFlux())
+	streams.subscribe { v: String -> println(v) }
+	System.`in`.read()
+}
 
 fun main() {
 	val router = Function { flux: Flux<Int> ->
 		val connectedFlux = flux.publish().autoConnect(2)
 		val even = UnicastProcessor.create<String>()
 		val odd = UnicastProcessor.create<String>()
-		val evenFlux = connectedFlux.filter { number: Int -> number % 2 == 0 }
-				.doOnNext { number: Int -> even.onNext("EVEN: $number") }
-		val oddFlux = connectedFlux.filter { number: Int -> number % 2 != 0 }
-				.doOnNext { number: Int -> odd.onNext("ODD: $number") }
+		val evenFlux = connectedFlux.filter { it % 2 == 0 }
+				.doOnNext { even.onNext("EVEN: $it") }
+		val oddFlux = connectedFlux.filter { it % 2 != 0 }
+				.doOnNext { odd.onNext("ODD: $it") }
 		Tuples.of<Flux<String>, Flux<String>>(Flux.from(even).doOnSubscribe { evenFlux.subscribe() },
 				Flux.from(odd).doOnSubscribe { oddFlux.subscribe() })
 	}
