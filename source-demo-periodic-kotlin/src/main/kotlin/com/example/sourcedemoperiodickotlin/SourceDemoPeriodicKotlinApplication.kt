@@ -73,8 +73,8 @@ fun generateFlux(): Flux<Int> {
 fun main() {
 	val router = Function { flux: Flux<Int> ->
 		val connectedFlux = flux.publish().autoConnect(2)
-		val even: UnicastProcessor<String> = UnicastProcessor.create()
-		val odd: UnicastProcessor<String> = UnicastProcessor.create()
+		val even = UnicastProcessor.create<String>()
+		val odd = UnicastProcessor.create<String>()
 		val evenFlux = connectedFlux.filter { number: Int -> number % 2 == 0 }
 				.doOnNext { number: Int -> even.onNext("EVEN: $number") }
 		val oddFlux = connectedFlux.filter { number: Int -> number % 2 != 0 }
