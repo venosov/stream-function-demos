@@ -1,15 +1,9 @@
 package com.example.sourcedemoperiodickotlin
 
-import org.springframework.boot.autoconfigure.SpringBootApplication
-import org.springframework.boot.runApplication
-import org.springframework.context.annotation.Bean
-import org.springframework.messaging.Message
-import org.springframework.messaging.support.GenericMessage
 import reactor.core.publisher.Flux
 import reactor.core.publisher.UnicastProcessor
 import reactor.util.function.Tuples
 import java.time.Duration
-import java.util.function.Consumer
 import java.util.function.Function
 
 //@SpringBootApplication
@@ -54,17 +48,33 @@ fun generateFlux(): Flux<Int> {
 	return Flux.interval(Duration.ofSeconds(1)).map(Long::toInt)
 }
 
-fun main0() {
-	generateFlux().subscribe {
-		println(it)
-	}
-}
+//fun main() {
+//	generateFlux().subscribe {
+//		println(it)
+//	}
+//
+//	System.`in`.read()
+//}
+//
+//fun main() {
+//	val router = Function { flux: Flux<Int> ->
+//		val connectedFlux = flux.publish().autoConnect(1)
+//		val even: UnicastProcessor<String> = UnicastProcessor.create()
+//		val evenFlux = connectedFlux.filter { number: Int -> number % 2 == 0 }
+//				.doOnNext { number: Int -> even.onNext("EVEN: $number") }
+//		Flux.from(even).doOnSubscribe { evenFlux.subscribe() }
+//	}
+//
+//	val streams = router.apply(generateFlux())
+//	streams.subscribe { v: String -> println(v) }
+//	System.`in`.read()
+//}
 
 fun main() {
 	val router = Function { flux: Flux<Int> ->
 		val connectedFlux = flux.publish().autoConnect(2)
-		val even: UnicastProcessor<String> = UnicastProcessor.create<String>()
-		val odd: UnicastProcessor<String> = UnicastProcessor.create<String>()
+		val even: UnicastProcessor<String> = UnicastProcessor.create()
+		val odd: UnicastProcessor<String> = UnicastProcessor.create()
 		val evenFlux = connectedFlux.filter { number: Int -> number % 2 == 0 }
 				.doOnNext { number: Int -> even.onNext("EVEN: $number") }
 		val oddFlux = connectedFlux.filter { number: Int -> number % 2 != 0 }
@@ -73,7 +83,7 @@ fun main() {
 				Flux.from(odd).doOnSubscribe { oddFlux.subscribe() })
 	}
 	val streams = router.apply(generateFlux())
-	streams.t1.subscribe { v: String -> println(v) }
-	streams.t2.subscribe { v: String -> println(v) }
+	streams.t1.subscribe { println(it) }
+	streams.t2.subscribe { println(it) }
 	System.`in`.read()
 }
