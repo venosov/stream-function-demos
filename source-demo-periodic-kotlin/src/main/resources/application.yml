@@ -1,9 +1,9 @@
 spring:
   cloud:
-    function:
-#      definition: uppercase|echo
-      definition: evenLogger;oddLogger
     stream:
+      function:
+        #      definition: uppercase|echo
+        definition: evenLogger;oddLogger
       bindings:
         evenLogger-in-0:
           destination: router-out-0
@@ -11,3 +11,29 @@ spring:
         oddLogger-in-0:
           destination: router-out-1
           group: odd
+      kafka:
+        streams:
+          binder:
+            brokers: ${kafka.brokers:localhost:9092}
+            configuration:
+              application:
+                id: ${spring.application.name}
+              key:
+                subject:
+                  name:
+                    strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
+              value:
+                subject:
+                  name:
+                    strategy: io.confluent.kafka.serializers.subject.RecordNameStrategy
+              replication:
+                factor: 1
+              processing:
+                guarantee: exactly_once
+            deserializationExceptionHandler: logAndContinue
+            replication-factor: 1
+            functions:
+              evenLogger:
+                applicationId: source-demo-periodic-kotlin-even-logger
+              oddLogger:
+                applicationId: source-demo-periodic-kotlin-odd-logger

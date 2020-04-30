@@ -5,6 +5,10 @@ import org.springframework.boot.runApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.messaging.Message
 import org.springframework.messaging.support.GenericMessage
+import org.apache.kafka.streams.kstream.KStream
+import org.apache.kafka.streams.processor.Processor
+import org.apache.kafka.streams.processor.ProcessorSupplier
+import org.springframework.cloud.stream.annotation.EnableBinding
 import reactor.core.publisher.Flux
 import reactor.core.publisher.UnicastProcessor
 import reactor.util.function.Tuples
@@ -12,6 +16,7 @@ import java.time.Duration
 import java.util.function.Consumer
 import java.util.function.Function
 
+@EnableBinding
 @SpringBootApplication
 class SourceDemoPeriodicKotlinApplication {
 
@@ -27,13 +32,19 @@ class SourceDemoPeriodicKotlinApplication {
 //			v
 //		}
 
+	@Bean
+	fun evenLogger() = Consumer<KStream<String, String>> { v ->
+		v.foreach { _, value ->
+			println("Even logger: $value")
+		}
+	}
 
 	@Bean
-	fun evenLogger() = Consumer { v: String -> println("Even logger: $v") }
-
-	@Bean
-	fun oddLogger() = Consumer { v: String -> println("Odd logger: $v") }
-
+	fun oddLogger() = Consumer<KStream<String, String>> { v ->
+		v.foreach { _, value ->
+			println("Odd logger: $value")
+		}
+	}
 }
 
 fun main(args: Array<String>) {
