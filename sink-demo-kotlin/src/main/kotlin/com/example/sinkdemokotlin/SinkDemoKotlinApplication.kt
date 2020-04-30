@@ -15,13 +15,13 @@ class SinkDemoKotlinApplication {
 	fun router(): Function<Flux<Int>, Tuple2<Flux<String>, Flux<String>>> {
 		return Function { flux: Flux<Int> ->
 			val connectedFlux = flux.publish().autoConnect(2)
-			val even: UnicastProcessor<String> = UnicastProcessor.create<String>()
-			val odd: UnicastProcessor<String> = UnicastProcessor.create<String>()
+			val even = UnicastProcessor.create<String>()
+			val odd = UnicastProcessor.create<String>()
 			val evenFlux = connectedFlux.filter { number: Int -> number % 2 == 0 }
 					.doOnNext { number: Int -> even.onNext("EVEN: $number") }
 			val oddFlux = connectedFlux.filter { number: Int -> number % 2 != 0 }
 					.doOnNext { number: Int -> odd.onNext("ODD: $number") }
-			Tuples.of<Flux<String>, Flux<String>>(Flux.from(even).doOnSubscribe { evenFlux.subscribe() },
+			Tuples.of(Flux.from(even).doOnSubscribe { evenFlux.subscribe() },
 					Flux.from(odd).doOnSubscribe { oddFlux.subscribe() })
 		}
 	}

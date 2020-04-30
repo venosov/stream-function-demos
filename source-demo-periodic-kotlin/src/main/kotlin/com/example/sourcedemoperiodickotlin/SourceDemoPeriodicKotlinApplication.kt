@@ -1,48 +1,54 @@
 package com.example.sourcedemoperiodickotlin
 
+import org.springframework.boot.autoconfigure.SpringBootApplication
+import org.springframework.boot.runApplication
+import org.springframework.context.annotation.Bean
+import org.springframework.messaging.Message
+import org.springframework.messaging.support.GenericMessage
 import reactor.core.publisher.Flux
 import reactor.core.publisher.UnicastProcessor
 import reactor.util.function.Tuples
 import java.time.Duration
+import java.util.function.Consumer
 import java.util.function.Function
 
-//@SpringBootApplication
-//class SourceDemoPeriodicKotlinApplication {
-////
-////	@Bean
-////	fun uppercase() = Function { v: Message<String> ->
-////			println("Uppercasing: $v")
-////			v.payload.toUpperCase()
-////		}
-////
-////	@Bean
-////	fun echo() = Function { v: String ->
-////			println("Echo: $v")
-////			v
-////		}
-////
+@SpringBootApplication
+class SourceDemoPeriodicKotlinApplication {
+
+//	@Bean
+//	fun uppercase() = Function { v: Message<String> ->
+//			println("Uppercasing: $v")
+//			v.payload.toUpperCase()
+//		}
 //
 //	@Bean
-//	fun evenLogger() = Consumer { v: String -> println("Even logger: $v") }
-//
-//	@Bean
-//	fun oddLogger() = Consumer { v: String -> println("Odd logger: $v") }
-//
-//}
-//
-//fun main(args: Array<String>) {
-//	runApplication<SourceDemoPeriodicKotlinApplication>(*args)
-//}
+//	fun echo() = Function { v: String ->
+//			println("Echo: $v")
+//			v
+//		}
 
 
-//fun main() {
-//	val uppercase = Function { v: Message<String> ->
-//		println("Uppercasing: $v")
-//		v.payload.toUpperCase()
-//	}
-//
-//	println(uppercase.apply(GenericMessage("hello")))
-//}
+	@Bean
+	fun evenLogger() = Consumer { v: String -> println("Even logger: $v") }
+
+	@Bean
+	fun oddLogger() = Consumer { v: String -> println("Odd logger: $v") }
+
+}
+
+fun main(args: Array<String>) {
+	runApplication<SourceDemoPeriodicKotlinApplication>(*args)
+}
+
+
+fun main0() {
+	val uppercase = Function { v: Message<String> ->
+		println("Uppercasing: $v")
+		v.payload.toUpperCase()
+	}
+
+	println(uppercase.apply(GenericMessage("hello")))
+}
 
 fun generateFlux(): Flux<Int> {
 	return Flux.interval(Duration.ofSeconds(1)).map(Long::toInt)
@@ -72,7 +78,7 @@ fun main2() {
 	System.`in`.read()
 }
 
-fun main() {
+fun main3() {
 	val router = Function { flux: Flux<Int> ->
 		val connectedFlux = flux.publish().autoConnect(2)
 		val even = UnicastProcessor.create<String>()
